@@ -6,6 +6,9 @@ export default defineSchema({
     name: v.string(),
     passwordHash: v.optional(v.string()),       // optional now
     xp: v.number(),
+    totalXp: v.optional(v.number()),
+    streak: v.optional(v.number()),
+    lastPracticeDate: v.optional(v.number()),
     onboardingCompleted: v.optional(v.boolean()),   
     reminderTime: v.optional(v.string()),  
     preferences: v.optional(v.string()),    // JSON string of answers
@@ -15,6 +18,8 @@ export default defineSchema({
     title: v.string(),
     language: v.string(),
     phrase: v.string(),
+    difficulty: v.optional(v.string()),
+    description: v.optional(v.string()),
   }),
 
   assessments: defineTable({
@@ -25,5 +30,12 @@ export default defineSchema({
     audioStorageId: v.string(),
     xpEarned: v.number(),
     createdAt: v.number(),
+  }),
+
+  achievements: defineTable({
+    userId: v.id("users"),
+    name: v.string(),
+    description: v.string(),
+    unlockedAt: v.number(),
   }),
 }); 

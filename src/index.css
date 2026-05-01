@@ -1,76 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-gradient-start: #0a0a0f;
+  --bg-gradient-end: #1e0a45;
+  --accent-green: #2ecc71;
+  --accent-green-hover: #27ae60;
+  --surface-dark: rgba(30, 20, 60, 0.7);
+  --surface-border: rgba(46, 204, 113, 0.3);
+  --text-primary: #ffffff;
+  --text-secondary: #a0aec0;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* Custom Utilities for Glowing Effects */
+.glow-text {
+  text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
+
+.glow-box {
+  box-shadow: 0 0 20px rgba(46, 204, 113, 0.2);
+}
+
+.glow-box:hover {
+  box-shadow: 0 0 30px rgba(46, 204, 113, 0.4);
+}
+
+/* Glassmorphism */
+.glass {
+  background: var(--surface-dark);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-border);
+}
+
+/* Existing Custom Classes Adapted to Dark Theme */
 .onboarding-container {
   max-width: 32rem;
   margin: 3rem auto;
   padding: 2rem;
-  background: white;
+  background: var(--surface-dark);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-border);
   border-radius: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   text-align: center;
+  color: var(--text-primary);
 }
+
 .onboarding-step h2 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
+
 .options-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: center;
 }
+
 .option-card {
   padding: 0.75rem 1rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
-  background: #f9fafb;
+  background: rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  transition: 0.15s;
+  transition: all 0.2s ease;
   font-weight: 500;
+  color: var(--text-secondary);
 }
+
 .option-card.selected {
-  border-color: #120f3f;
-  background: #eef2ff;
-  color: #0b0a26;
+  border-color: var(--accent-green);
+  background: rgba(46, 204, 113, 0.1);
+  color: var(--accent-green);
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.2);
 }
-.option-card:hover {
-  border-color: #c7d2fe;
+
+.option-card:hover:not(.selected) {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-primary);
 }
+
 .big-button {
   display: block;
   width: 100%;
-  padding: 0.75rem;
-  margin-top: 0.5rem;
+  padding: 0.85rem;
+  margin-top: 1rem;
   border-radius: 0.5rem;
-  background: #08080b;
-  color: white;
-  font-weight: 600;
+  background: var(--accent-green);
+  color: #000;
+  font-weight: 700;
   border: none;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
 }
-.big-button:hover { opacity: 0.9; }
+
+.big-button:hover { 
+  background: var(--accent-green-hover);
+  box-shadow: 0 0 25px rgba(46, 204, 113, 0.6);
+  transform: translateY(-2px);
+}
+
 .big-button.secondary {
-  background: #e5e7eb;
-  color: #374151;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
+.big-button.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .toggle-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #f3f4f6;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
 }
+
 .toggle-switch {
   position: relative;
   width: 44px;
   height: 24px;
-  background: #d1d5db;
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 12px;
-  transition: 0.2s;
+  transition: 0.3s;
   cursor: pointer;
 }
+
 .toggle-switch.active {
-  background: #26262f;
+  background: var(--accent-green);
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
 }
+
 .toggle-switch::after {
   content: '';
   position: absolute;
@@ -80,8 +160,9 @@
   height: 20px;
   background: white;
   border-radius: 50%;
-  transition: 0.2s;
+  transition: 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
+
 .toggle-switch.active::after {
   left: 22px;
 }

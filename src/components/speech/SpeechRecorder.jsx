@@ -1,8 +1,9 @@
 import { useState, useRef } from "react";
 import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
-/*import convex from "../lib/convex"; */  
+import { api } from "../../../convex/_generated/api";
+/*import convex from "../../lib/convex"; */  
 import PronunciationFeedback from "./PronunciationFeedback";
+import WaveformVisualizer from "./WaveformVisualizer";
 
 export default function SpeechRecorder({ phrase, language, userId, lessonId }) {
   const [recording, setRecording] = useState(false);
@@ -107,34 +108,73 @@ const submit = async () => {
 };
 
   return (
-    <div className="space-y-4">
-      <p className="text-lg">
-        Say: <strong className="text-indigo-600">{phrase}</strong>
-      </p>
-      <div className="flex gap-2">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div style={{ textAlign: 'center', padding: '24px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '16px' }}>
+        <p style={{ color: '#9ca3af', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 12px', fontWeight: '600' }}>
+          Say this phrase aloud:
+        </p>
+        <p style={{ color: '#fff', fontSize: '24px', fontWeight: '800', margin: 0, letterSpacing: '-0.5px' }}>
+          {phrase}
+        </p>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         {!recording ? (
-          <button onClick={start} className="bg-indigo-600 text-white px-4 py-2 rounded">
+          <button 
+            onClick={start} 
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '10px',
+              padding: '16px 32px', background: 'rgba(46,204,113,0.15)',
+              border: '1px solid rgba(46,204,113,0.4)', borderRadius: '999px',
+              color: '#2ecc71', fontSize: '16px', fontWeight: '700',
+              cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 8px 24px rgba(46,204,113,0.15)'
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(46,204,113,0.25)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(46,204,113,0.15)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+          >
+            <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#2ecc71', boxShadow: '0 0 10px #2ecc71' }} />
             Start Recording
           </button>
         ) : (
-          <button onClick={stop} className="bg-red-500 text-white px-4 py-2 rounded">
-            Stop
+          <button 
+            onClick={stop} 
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '10px',
+              padding: '16px 32px', background: 'rgba(239,68,68,0.15)',
+              border: '1px solid rgba(239,68,68,0.4)', borderRadius: '999px',
+              color: '#ef4444', fontSize: '16px', fontWeight: '700',
+              cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 8px 24px rgba(239,68,68,0.15)'
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.25)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.15)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+          >
+            <div style={{ width: '12px', height: '12px', borderRadius: '4px', background: '#ef4444', boxShadow: '0 0 10px #ef4444' }} />
+            Stop Recording <WaveformVisualizer isRecording={recording} />
           </button>
         )}
       </div>
+
       {audioBlob && (
-        <div>
-          <audio src={URL.createObjectURL(audioBlob)} controls className="w-full mb-2" />
+        <div style={{ background: 'rgba(255,255,255,0.03)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <audio src={URL.createObjectURL(audioBlob)} controls style={{ width: '100%', height: '44px', marginBottom: '20px', borderRadius: '8px' }} />
           <button
             onClick={submit}
             disabled={processing}
-            className="bg-green-600 text-white px-4 py-2 rounded"
+            style={{
+              width: '100%', padding: '16px', background: processing ? 'rgba(46,204,113,0.5)' : '#2ecc71',
+              border: 'none', borderRadius: '12px', color: '#000',
+              fontWeight: '800', fontSize: '16px', cursor: processing ? 'not-allowed' : 'pointer',
+              transition: 'background 0.2s'
+            }}
+            onMouseEnter={e => { if(!processing) e.currentTarget.style.background = '#27ae60'; }}
+            onMouseLeave={e => { if(!processing) e.currentTarget.style.background = '#2ecc71'; }}
           >
-            {processing ? "Analyzing..." : "Check Pronunciation"}
+            {processing ? "✨ Analyzing Pronunciation..." : "Check Pronunciation →"}
           </button>
         </div>
       )}
-      {feedback && <PronunciationFeedback feedback={feedback} />}
+      
+      {feedback && <div style={{ marginTop: '16px' }}><PronunciationFeedback feedback={feedback} /></div>}
     </div>
   );
 }
